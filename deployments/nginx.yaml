@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mc3
+  labels:
+    app: mc3
+spec:
+  template:
+    metadata:
+      labels:
+        app: testing-mc3
+    spec:
+      containers:
+      - name: webapp
+        image: training/webapp
+      - name: nginx
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: nginx-proxy-config
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+      volumes:
+      - name: nginx-proxy-config
+        configMap:
+          name: mc3-nginx-conf
